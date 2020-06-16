@@ -1,0 +1,14 @@
+<!--miniprogram/pages/camera/camera.wxml-->
+<view class="tools">
+    <view class='tool'  bindtap="takePhoto">
+       <icon class="iconfont icon-camera"></icon>
+    </view>
+    <view class='tool'  bindtap="uploadFile">
+       <icon class="iconfont icon-clicklist"></icon>
+    </view>
+    <view class="thumb-wrapper">
+        <view class="thumb-item">
+            <image></image>
+        </view>
+    </view>
+</view>

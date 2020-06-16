@@ -1,0 +1,6 @@
+/* miniprogram/pages/camera/camera.wxss */
+.tools{
+    background: #f6f6f6;
+    display: flex;
+  
+}

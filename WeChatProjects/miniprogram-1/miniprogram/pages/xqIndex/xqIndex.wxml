@@ -1,0 +1,32 @@
+<!--miniprogram/pages/xqIndex/xqIndex.wxml-->
+  <view>
+    <view class="userInfo">
+    <button 
+        open-type="getUserInfo" 
+        bindgetuserinfo="onGetUserInfo"
+        class="avatar"
+        style="width:100rpx;background-image: url({{avatarUrl}})"
+        size="default">
+    </button>
+    </view>
+    <scroll-view  scroll-y="true"  class="scroll-wrapper">
+        <view wx:for="{{actives}}"  wx:key="index" >
+            <cover-image  src="{{item.imgUrl}}" ></cover-image>
+            <view class="description">
+                <text class="title"></text>
+                <text class="detail"></text>
+            </view>
+        </view>
+    </scroll-view>
+    <view class="tabBar">
+        <view class="bar-item" bindtap="handleCamera">
+            <icon class="iconfont icon-camera"></icon>
+        </view>
+        <view class="bar-item">
+            <icon class="iconfont icon-mv"></icon>
+        </view>
+        <view class="bar-item">
+            <icon class="iconfont icon-clicklist"></icon>
+        </view>
+    </view>
+  </view>

@@ -1,0 +1,41 @@
+/* miniprogram/pages/xqIndex/xqIndex.wxss */
+page {
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.scroll-wrapper{
+  height: calc(100vh - 250rpx);
+  overflow: auto
+}
+.userInfo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.avatar{
+  width: 100rpx;
+  height: 100rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+  border-radius: 50%;
+  background-size: cover;
+  background-color: white;
+}
+.tabBar{
+  width: 100%;
+  bottom: 0;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bar-item{
+  height: 100rpx;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
