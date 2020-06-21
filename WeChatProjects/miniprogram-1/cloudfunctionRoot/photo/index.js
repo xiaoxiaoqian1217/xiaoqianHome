@@ -5,8 +5,8 @@ cloud.init()
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const {imgUrl} = event
+  const {imgUrls} = event
   return {
-    imgUrl: imgUrl,
+    imgUrls: imgUrls,
   }
 }

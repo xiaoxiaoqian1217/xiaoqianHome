@@ -11,11 +11,26 @@
     </view>
     <scroll-view  scroll-y="true"  class="scroll-wrapper">
         <view wx:for="{{actives}}"  wx:key="index" >
-            <cover-image  src="{{item.imgUrl}}" ></cover-image>
-            <view class="description">
+        <view wx:if='{{item.imgUrls.length>1}}'>
+            <block wx:for="{{item.imgUrls}}"  wx:key="index">
+            <cover-image  src="{{item}}"></cover-image>
+            </block>
+             <view class="description">
+                <text>{{item.date}}</text>
                 <text class="title"></text>
                 <text class="detail"></text>
             </view>
+        </view>
+        <view wx:else='{{item.imgUrls.length<2}}'>
+         <cover-image  src="{{item.imgUrls[0]}}" ></cover-image>
+         <view class="description">
+                <text>{{item.date}}</text>
+                <text class="title"></text>
+                <text class="detail"></text>
+            </view>
+        </view>
+
+           
         </view>
     </scroll-view>
     <view class="tabBar">

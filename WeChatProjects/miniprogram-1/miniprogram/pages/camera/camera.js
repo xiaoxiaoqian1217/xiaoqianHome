@@ -9,49 +9,50 @@ Page({
   data: {
     fileIds: [] // 保存上传到云的图片id
   },
-  insertDataBase: () => {
+  insertDataBase: function(){
+    var {fileIds} = this.data
+    console.log('fileIds',fileIds)
     wx.cloud.callFunction({
       name:"photo",
       data:{
-        imgUrl: res.fileID,
+        imgUrls: fileIds,
       },
       success:res=>{
-        const imgUrl = res.result.imgUrl
+        const imgUrls = res.result.imgUrls
         const date = formatTime(new Date().getTime())
         db.collection("photo").add({
           data: { 
-            imgUrl ,
+            imgUrls,
             date
           },
           success:function(ret){
             console.log('插入云数据库成功')
-            // wx.navigateTo({
-            //   url: '/pages/xqIndex/xqIndex',
-            //   success: (res) => {
-            //    console.log(res)
-            //   },
-            //   fail: (err)=>{
-            //     console.log(err)
-            //   }
-            // })
+            wx.navigateTo({
+              url: '/pages/xqIndex/xqIndex',
+              success: (res) => {
+               console.log(res)
+              },
+              fail: (err)=>{
+                console.log(err)
+              }
+            })
           }
         })   
       }
     })
   },
   /**
-   * 上传到云
+   * 单个文件上传到云
    */
-  upLoad: () => {
-    wx.cloud.uploadFile({
-      cloudPath: cloudPath[index],
-      filePath: filePath, // 文件路径
+  upLoadCloud: function(param)  {
+     wx.cloud.uploadFile({
+      cloudPath: param.cloudPath, //  文件名 
+      filePath: param.filePath, // 文件路径
     }).then(res => {
       // 预览图片
-      this.setData({     
-      })
+      this.data.fileIds.push(res.fileID)
       console.log(res.fileID)
-      // 把数据写入数据库
+      
     }).catch(error => {
       console.log('error', error)
       // handle error
@@ -60,8 +61,7 @@ Page({
   /**
    * 上传图片
    */
-  uploadFile: () => {
-    
+  uploadFile: function() {
     wx.chooseImage({
       count: 3,
       sizeType: ['original', 'compressed'],
@@ -69,19 +69,42 @@ Page({
       success: (res) => {
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
-        // 批量上传
+        // 创建每个文件的名字
         const cloudPath = []
         tempFilePaths.forEach((file,index) => {
           cloudPath.push(`myImage${Math.random()}`)
         })
-
-        console.log('tempFilePaths',tempFilePaths)
         // 把所有异步上传图片到云的存入数组
         const promiseArr = []
-        tempFilePaths.forEach(()=>{
+        tempFilePaths.forEach((filePath,index)=>{
+          console.log('filePath', filePath)
           promiseArr.push(new Promise((resolve, reject)=>{
-
+            wx.cloud.uploadFile({
+              cloudPath: cloudPath[index], //  文件名 
+              filePath: filePath, // 文件路径
+            }).then(res => {
+              // 预览图片
+              this.setData({
+                fileIds: this.data.fileIds.concat(res.fileID)
+              })
+              
+              console.log(res.fileID)
+              resolve()
+            }).catch(error => {
+              console.log('error', error)
+              reject()
+              // handle error
+            }) 
           }))
+        })
+        Promise.all(promiseArr).then(res=>{
+          console.log('all')
+        // 当所有图片都上传成功以后，当作一条记录插入数据库
+          this.insertDataBase()
+          console.log('res', res)
+        }).catch(err=> {
+          console.log('err', err)
+          // 捕捉最先失败的promise，一个promise失败则算失败
         })
         }
     })

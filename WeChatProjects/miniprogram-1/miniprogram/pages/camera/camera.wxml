@@ -7,8 +7,8 @@
        <icon class="iconfont icon-clicklist"></icon>
     </view>
     <view class="thumb-wrapper">
-        <view class="thumb-item">
-            <image></image>
+        <view wx:for="{{fileIds}}" wx:key="index" class="thumb-item">
+            <image src="{{item}}"></image>
         </view>
     </view>
 </view>
